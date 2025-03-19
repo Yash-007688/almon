@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editable Excel File</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script>
+        function editCell(row, col, element) {
+            let newValue = prompt("Enter new value:", element.innerText);
+            if (newValue !== null) {
+                fetch("/edit", {  // ✅ Fixed API endpoint
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: `row=${row}&col=${col}&value=${encodeURIComponent(newValue)}`
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        element.innerText = newValue;
+                    } else {
+                        alert("Error: " + data.error);
+                        console.error("Error:", data.error);
+                    }
+                })
+                .catch(error => {
+                    alert("❌ Network error: Check Flask server");
+                    console.error("❌ Network error:", error);
+                });
+            }
+        }
+    </script>
+</head>
+<body>
+    <h2>Editable Excel File</h2>
+    
+    {% if table and table|length > 0 %}
+        <table border="1">
+            <tr>
+                {% for col in table[0].keys() %}
+                    <th>{{ col }}</th>
+                {% endfor %}
+            </tr>
+            {% for row_idx, row in table.items() %}
+            <tr>
+                {% for col_idx, cell in row.items() %}
+                    <td onclick="editCell('{{ row_idx }}', '{{ col_idx }}', this)">{{ cell }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p style="color: red;">❌ No data available in the Excel file.</p>
+    {% endif %}
+
+    <a href="/dashboard">🏠 Back to Dashboard</a>
+    <a href="/log">📜 View Edit Log</a>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Excel Data</title>
+    <link rel="stylesheet" href="/static/yash.css">
+</head>
+<body>
+    <h2>📝 Edit Excel Data</h2>
+    {% if table %}
+        <table border="1">
+            <thead>
+                <tr>
+                    {% for col in table[0].keys() %}
+                        <th>{{ col }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in table %}
+                <tr>
+                    {% for cell in row.values() %}
+                        <td contenteditable="true">{{ cell }}</td>  <!-- Make cells editable -->
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button id="save-button">Save Changes</button>
+    {% else %}
+        <p style="color: red;">❌ No data available in the Excel file.</p>
+    {% endif %}
+    <br>
+    <a href="/dashboard">🏠 Back to Dashboard</a>
+    <script>
+        document.getElementById('save-button').addEventListener('click', function() {
+            const rows = document.querySelectorAll('tbody tr');
+            const data = [];
+            rows.forEach((row, rowIndex) => {
+                const cells = row.querySelectorAll('td');
+                const rowData = {};
+                cells.forEach((cell, colIndex) => {
+                    rowData[colIndex] = cell.innerText;  // Get the text from each cell
+                });
+                data.push(rowData);
+            });
+            // Send the data to the server for saving
+            fetch('/edit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    alert(result.message);
+                } else {
+                    alert("Error: " + result.error);
+                }
+            })
+            .catch(error => {
+                alert("❌ Network error. Check Flask server.");
+                console.error("❌ Network error:", error);
+            });
+        });
+    </script>
+</body>
+</html>

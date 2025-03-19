@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Welcome, {{ username }}</h1>
+    <h2>your role {{ role }}</h2>
+    <h3>📂 Excel File Preview</h3>
+
+    {% if table %}
+        <table border="1">
+            <thead>
+                <tr>
+                    {% for col in table[0].keys() %}
+                        <th>{{ col }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in table %}
+                <tr>
+                    {% for cell in row.values() %}
+                        <td>{{ cell }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p style="color: red;">❌ No data available in the Excel file.</p>
+    {% endif %}
+
+    <a href="/excel">✏️ Edit Excel File</a> | 
+    <a href="/viewlog">📜 View Edit Log</a> | 
+    <a href="/logout">🚪 Logout</a>
+</body>
+</html>

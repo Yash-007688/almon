@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Log</title>
+    <link rel="stylesheet" href="/static/yash.css">
+</head>
+<body>
+    <h1>Edit Log</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Action</th>
+                <th>Row</th>
+                <th>Column</th>
+                <th>Old Value</th>
+                <th>New Value</th>
+                <th>Timestamp</th>
+                <th>Comments</th> <!-- New column for comments -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in log_table %}
+            <tr>
+                <td>{{ log.Username }}</td>
+                <td>{{ log.Action }}</td>
+                <td>{{ log.Row }}</td>
+                <td>{{ log.Column }}</td>
+                <td>{{ log.Old_Value }}</td>
+                <td>{{ log.New_Value }}</td>
+                <td>{{ log.Timestamp }}</td>
+                <td>
+                    <input type="text" placeholder="Add a comment" />
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="/dashboard">🏠 Back to Dashboard</a>
+</body>
+</html>

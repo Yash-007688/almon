@@ -1,0 +1,52 @@
+/* Table Styling */
+table { 
+    border-collapse: collapse; 
+    width: 100%; 
+    font-family: Arial, sans-serif;
+}
+
+/* Header Styling */
+th { 
+    background-color: #4CAF50; 
+    color: white; 
+    padding: 10px; 
+    text-align: center; 
+    border: 1px solid black;
+}
+
+/* Cell Styling */
+td { 
+    border: 1px solid black; 
+    padding: 10px; 
+    text-align: center; 
+    cursor: pointer;
+}
+
+/* Highlight edited cells */
+.edited { 
+    background-color: yellow; 
+    font-weight: bold; 
+    border: 2px solid red;
+}
+
+/* Hover effect */
+td:hover { 
+    background-color: #f1f1f1; 
+}
+
+/* Style for the Edit Log link */
+a {
+    display: block;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    width: 150px;
+}
+
+a:hover {
+    background-color: #0056b3;
+}
